@@ -3,3 +3,9 @@
 *.jpg binary
 *.webp binary
 *.woff2 binary
+
+# Scripts do Windows precisam de CRLF; os do shell, de LF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+gradlew text eol=lf
+*.sh text eol=lf
