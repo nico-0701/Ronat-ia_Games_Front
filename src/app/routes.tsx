@@ -9,6 +9,7 @@ import { MembersTab } from '@/features/groups/MembersTab';
 import { SettingsTab } from '@/features/groups/SettingsTab';
 import { HomePage } from '@/features/home/HomePage';
 import { NotFoundPage, RouteError } from './ErrorPages';
+import { Loading } from '@/ui/Spinner';
 import { RequireAuth } from './Shell';
 
 /** Uma tela que só é baixada quando alguém a abre (o início e a entrada continuam leves). */
@@ -23,6 +24,8 @@ function lazyPage<T extends Record<string, unknown>>(
 export const routes: RouteObject[] = [
   {
     errorElement: <RouteError />,
+    // Enquanto a tela inicial (preguiçosa) é baixada, em vez de uma tela em branco.
+    HydrateFallback: () => <Loading />,
     children: [
       { path: '/entrar', element: <LoginPage /> },
       { path: '/cadastro', element: <RegisterPage /> },

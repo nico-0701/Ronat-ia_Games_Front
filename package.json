@@ -50,6 +50,7 @@
     "test:watch": "vitest",
     "api:types": "node scripts/gen-api.mjs",
     "api:sync": "node scripts/gen-api.mjs --sync",
-    "check": "npm run lint && npm run typecheck && npm run test && npm run build"
+    "check": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "icons": "node scripts/make-icons.mjs"
   }
 }

@@ -2,7 +2,7 @@
 
 Cliente Web (e, depois, Android via Capacitor) da plataforma de jogos **Ronat-ia Games**: jogos para a família e os amigos, cada um no seu celular. O servidor (API, regras dos jogos, banco) está no repositório [`Ronat-ia_Games_Back`](https://github.com/nico-0701/Ronat-ia_Games_Back); este repositório é só a interface.
 
-> **Estado:** entrada por telefone (login e cadastro), início, perfil e textos de privacidade/termos. Em andamento: grupos, partidas em tempo real, Mímica, ranking. Veja [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+> **Estado:** o Web está completo para o primeiro jogo: entrada por telefone, grupos (senha, pessoas, perfis sem celular), partidas em tempo real, **Mímica**, ranking, histórico e perfil (foto, aparelhos, baixar os dados e excluir a conta). Falta empacotar para Android (Capacitor), publicar e os próximos jogos. Veja [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) e [`docs/GAMES.md`](docs/GAMES.md).
 
 ## Stack
 
@@ -30,6 +30,7 @@ Em desenvolvimento o Vite encaminha `/api` e `/hubs` para a API (`VITE_DEV_API_T
 | `npm run typecheck`               | TypeScript                                                                              |
 | `npm run build`                   | build de produção em `dist/` (gera também `dist/_headers` com a CSP)                    |
 | `npm run api:types`               | regenera `src/api/schema.d.ts` do contrato versionado em `openapi/v1.json`              |
+| `npm run icons`                   | regenera os ícones do app (PNG) em `public/icons` a partir do desenho do favicon        |
 | `npm run api:sync`                | copia o contrato mais novo do Back (pasta irmã `../Back` ou GitHub) e regenera os tipos |
 
 ## O contrato com o Back

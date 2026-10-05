@@ -49,9 +49,21 @@ flowchart TB
 
 TanStack Query cuida de cache, recarga e erros. Cada área tem seus hooks (`useGroups`, `useMe`...). Erros viram `ApiError` com `code` estável (para decidir o que fazer) e `detail` em português (para mostrar). Falhas de rede e 5xx tentam de novo sozinhas; 4xx não.
 
-## Tempo real e relógio
+## Partidas, tempo real e relógio
 
-Os prazos dos jogos (preparo, cronômetro, chance de roubo) vêm do servidor em UTC. O `ServerClock` corrige a diferença do relógio do aparelho usando `GET /meta`; o cronômetro na tela é só uma projeção desses prazos. O SignalR só **avisa e entrega a visão**; agir é sempre pelo REST (ver `docs/REALTIME.md` do Back).
+- **O servidor é a fonte da verdade.** A tela da partida mostra o que o servidor devolve para quem consulta (, a resposta de uma ação ou a mensagem do tempo real), nunca deduz regras. Os botões vêm de , a carta só aparece para quem o servidor mostra.
+- **Tempo real (SignalR) só avisa e entrega a visão** (/): uma conexão para o app inteiro, que assina de novo tudo o que está sendo assistido ao reconectar (o devolve o estado completo, então nada se perde), volta sozinha quando o token vence e fecha depois de um tempo sem ninguém assistindo. Agir é sempre pelo REST, com (idempotente) e uma nova tentativa em conflito de concorrência. O cliente SignalR só é baixado ao abrir uma partida ().
+- **A versão só sobe** (): mensagem atrasada é ignorada. Uma busca explícita vale também com a mesma versão, porque algumas fases mudam só com o relógio (o preparo da Mímica vira valendo depois de 3 s sem gravar nada); por isso o app pede o estado de novo logo depois de cada prazo (). Sem tempo real, busca a cada 4 s.
+- **Relógio:** os prazos vêm em UTC do servidor. O corrige a diferença do relógio do aparelho usando ; o cronômetro é só uma projeção desses prazos.
+- **Jogos:** o catálogo () diz o que está instalado; a tela de cada jogo vive em e é registrada em (ver [GAMES.md](GAMES.md)). Jogo que o app não conhece aparece sem botão de jogar e pede para atualizar.
+
+## Pacote
+
+Telas pouco usadas (partidas, ranking, perfil, textos legais) são rotas preguiçosas, e o SignalR é um pacote à parte: o início e a entrada baixam só o essencial (~95 KB comprimidos). Fontes só em latin/latin-ext, hospedadas junto (nada de requisição a terceiros, exceto o Cloudflare Turnstile quando ligado).
+
+## Instalação como app
+
+- ícones PNG () permitem "Adicionar à tela inicial" no celular. Não há _service worker_: o jogo precisa de internet o tempo todo, então cache offline não ajudaria. O empacotamento Android (Capacitor) é a próxima etapa.
 
 ## Estilo
 
@@ -59,6 +71,6 @@ CSS Modules (sem biblioteca de componentes). Paleta e fontes do app original: ro
 
 ## Testes
 
-- Unidade: erros, telefone, relógio, tokens, sessão (incluindo duas abas), versão.
-- Integração de tela: o app inteiro (rotas + provedores) contra um servidor de mentira (`src/test/renderApp.tsx`), simulando o que a API responde.
+- Unidade: erros, telefone, relógio, tokens, sessão (incluindo duas abas), versão, reconciliação de versões, o hub do SignalR com uma conexão de mentira (reconexão, reassinatura, fechamento), o modelo da Mímica.
+- Integração de tela: o app inteiro (rotas + provedores) contra um servidor de mentira e um tempo real de mentira (`src/test/renderApp.tsx`, `fakeHub.ts`), simulando o que a API e o servidor empurram.
 - Verificação manual contra o Back de verdade: `npm run dev` com a API local.
