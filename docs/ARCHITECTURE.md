@@ -51,11 +51,11 @@ TanStack Query cuida de cache, recarga e erros. Cada área tem seus hooks (`useG
 
 ## Partidas, tempo real e relógio
 
-- **O servidor é a fonte da verdade.** A tela da partida mostra o que o servidor devolve para quem consulta (, a resposta de uma ação ou a mensagem do tempo real), nunca deduz regras. Os botões vêm de , a carta só aparece para quem o servidor mostra.
-- **Tempo real (SignalR) só avisa e entrega a visão** (/): uma conexão para o app inteiro, que assina de novo tudo o que está sendo assistido ao reconectar (o devolve o estado completo, então nada se perde), volta sozinha quando o token vence e fecha depois de um tempo sem ninguém assistindo. Agir é sempre pelo REST, com (idempotente) e uma nova tentativa em conflito de concorrência. O cliente SignalR só é baixado ao abrir uma partida ().
-- **A versão só sobe** (): mensagem atrasada é ignorada. Uma busca explícita vale também com a mesma versão, porque algumas fases mudam só com o relógio (o preparo da Mímica vira valendo depois de 3 s sem gravar nada); por isso o app pede o estado de novo logo depois de cada prazo (). Sem tempo real, busca a cada 4 s.
-- **Relógio:** os prazos vêm em UTC do servidor. O corrige a diferença do relógio do aparelho usando ; o cronômetro é só uma projeção desses prazos.
-- **Jogos:** o catálogo () diz o que está instalado; a tela de cada jogo vive em e é registrada em (ver [GAMES.md](GAMES.md)). Jogo que o app não conhece aparece sem botão de jogar e pede para atualizar.
+- **O servidor é a fonte da verdade.** A tela da partida mostra o que o servidor devolve para quem consulta (`GET /sessions/{id}`, a resposta de uma ação ou a mensagem do tempo real), nunca deduz regras. Os botões vêm de `allowedActions`, e a carta só aparece para quem o servidor mostra.
+- **Tempo real (SignalR) só avisa e entrega a visão** (`LiveHub`/`SignalRHub`): uma conexão para o app inteiro, que assina de novo tudo o que está sendo assistido ao reconectar (o `Subscribe` devolve o estado completo, então nada se perde), volta sozinha quando o token vence e fecha depois de um tempo sem ninguém assistindo. Agir é sempre pelo REST, com `clientActionId` (idempotente) e uma nova tentativa em conflito de concorrência. O cliente SignalR só é baixado ao abrir uma partida (`LazyHub`).
+- **A versão só sobe** (`reconcileSession`): mensagem atrasada é ignorada. Uma busca explícita vale também com a mesma versão, porque algumas fases mudam só com o relógio (o preparo da Mímica vira "valendo" depois de 3 s sem gravar nada); por isso o app pede o estado de novo logo depois de cada prazo (`useRefetchAfter`). Sem tempo real, busca a cada 4 s.
+- **Relógio:** os prazos vêm em UTC do servidor. O `ServerClock` corrige a diferença do relógio do aparelho usando `GET /meta`; o cronômetro é só uma projeção desses prazos.
+- **Jogos:** o catálogo (`GET /games`) diz o que está instalado; a tela de cada jogo vive em `src/features/games/<jogo>` e é registrada em `registry.ts` (ver [GAMES.md](GAMES.md)). Jogo que o app não conhece aparece sem botão de jogar e pede para atualizar.
 
 ## Pacote
 
@@ -63,7 +63,7 @@ Telas pouco usadas (partidas, ranking, perfil, textos legais) são rotas pregui�
 
 ## Instalação como app
 
-- ícones PNG () permitem "Adicionar à tela inicial" no celular. Não há _service worker_: o jogo precisa de internet o tempo todo, então cache offline não ajudaria. O empacotamento Android (Capacitor) é a próxima etapa.
+O manifesto (`public/manifest.webmanifest`) e os ícones PNG (`npm run icons`) permitem "Adicionar à tela inicial" no celular. Não há _service worker_: o jogo precisa de internet o tempo todo, então cache offline não ajudaria. O empacotamento Android (Capacitor) é a próxima etapa.
 
 ## Estilo
 
