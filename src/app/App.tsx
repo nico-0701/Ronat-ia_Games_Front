@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { createBrowserRouter, RouterProvider, type DataRouter } from 'react-router';
+import { OfflineBanner } from '@/ui/OfflineBanner';
 import { ToastProvider } from '@/ui/ToastProvider';
 import { ServicesProvider } from './ServicesProvider';
 import { VersionGate } from './VersionGate';
@@ -18,6 +19,7 @@ export function App({ services, router: provided }: AppProps) {
   return (
     <ServicesProvider services={services}>
       <ToastProvider>
+        <OfflineBanner />
         <VersionGate>
           <RouterProvider router={router} />
         </VersionGate>

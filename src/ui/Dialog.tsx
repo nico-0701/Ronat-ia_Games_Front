@@ -11,7 +11,32 @@ interface DialogProps {
   actions?: ReactNode;
 }
 
-/** Janela modal simples: fecha com Esc ou tocando fora, prende o foco no começo e devolve-o ao fechar. */
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+/** Mantém o Tab (e Shift+Tab) dentro da janela: do último item volta ao primeiro, e vice-versa. */
+function trapFocus(event: KeyboardEvent, panel: HTMLElement | null): void {
+  if (!panel) {
+    return;
+  }
+
+  const items = [...panel.querySelectorAll<HTMLElement>(FOCUSABLE)];
+  const first = items[0];
+  const last = items[items.length - 1];
+  const active = document.activeElement;
+  if (!first || !last) {
+    event.preventDefault();
+    panel.focus();
+  } else if (event.shiftKey && (active === first || active === panel)) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && (active === last || !panel.contains(active))) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
+/** Janela modal simples: fecha com Esc ou tocando fora, leva o foco para dentro, o mantém lá (Tab circula) e o devolve ao fechar. */
 export function Dialog({ open, title, onClose, children, actions }: DialogProps) {
   const titleId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -35,6 +60,11 @@ export function Dialog({ open, title, onClose, children, actions }: DialogProps)
       if (event.key === 'Escape') {
         event.stopPropagation();
         onCloseRef.current();
+        return;
+      }
+
+      if (event.key === 'Tab') {
+        trapFocus(event, panelRef.current);
       }
     };
 
