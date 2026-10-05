@@ -1,0 +1,13 @@
+{
+  "name": "Ronat-ia Games",
+  "short_name": "Ronat-ia",
+  "description": "Jogos para jogar com amigos e família, cada um no seu celular.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fffbf2",
+  "theme_color": "#402660",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

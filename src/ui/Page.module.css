@@ -1,0 +1,43 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border-sm) solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--muted);
+  border: var(--border-sm) dashed var(--line);
+  border-radius: var(--radius);
+}
+
+.empty h2 {
+  color: var(--ink);
+}

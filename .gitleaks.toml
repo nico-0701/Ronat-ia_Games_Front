@@ -1,0 +1,5 @@
+title = "Ronat-ia Games (Front)"
+
+# Mantém todas as regras padrão do gitleaks. O Front não tem segredos: só a URL pública da API e a chave pública do Turnstile.
+[extend]
+useDefault = true

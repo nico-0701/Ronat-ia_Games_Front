@@ -1,0 +1,34 @@
+# Dependências e builds
+node_modules/
+dist/
+coverage/
+.vite/
+*.tsbuildinfo
+
+# Segredos e configuração local (NUNCA versionar)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.keystore
+*.jks
+
+# Ferramentas e dados locais
+.claude/
+*.log
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Android / Capacitor (gerados)
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/capacitor-cordova-android-plugins/

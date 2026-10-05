@@ -1,0 +1,50 @@
+.spinner {
+  display: inline-grid;
+  place-items: center;
+  --s: 28px;
+  width: var(--s);
+  height: var(--s);
+}
+
+.sm {
+  --s: 18px;
+}
+
+.lg {
+  --s: 48px;
+}
+
+.ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-top-color: currentColor;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.page {
+  min-height: 50dvh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  padding: 24px;
+  color: var(--plum);
+  text-align: center;
+}
+
+:root[data-theme='dark'] .page {
+  color: var(--sun);
+}
+
+.message {
+  max-width: 28ch;
+  color: var(--muted);
+}

@@ -1,0 +1,45 @@
+.app {
+  max-width: var(--column);
+  min-height: 100dvh;
+  margin-inline: auto;
+  padding: 10px var(--gutter) 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--logo);
+  text-decoration: none;
+}
+
+.brand span {
+  color: var(--magenta);
+}
+
+.profile {
+  display: inline-grid;
+  place-items: center;
+  min-width: 48px;
+  min-height: 48px;
+  color: var(--ink);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}

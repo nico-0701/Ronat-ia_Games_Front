@@ -1,0 +1,32 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: var(--border) solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.paper {
+  background: var(--paper);
+}
+
+.cream {
+  background: var(--cream);
+}
+
+.sun {
+  background: var(--sun);
+  color: #2b1f3d;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+.sun .hint {
+  color: #2b1f3d;
+}

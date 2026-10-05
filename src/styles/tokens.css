@@ -1,0 +1,70 @@
+/*
+ * Paleta e fontes do guia visual do app original (Bitter nos títulos, Nunito no texto). Botões e cartões com contorno grosso
+ * e sombra dura, para ficarem legíveis para todas as idades. Verde = avançar, vermelho = parar/errar.
+ */
+:root {
+  --bg: #fffbf2;
+  --ink: #2b1f3d;
+  --muted: #51446a;
+  --paper: #ffffff;
+  --cream: #fbf3df;
+  --line: #2b1f3d;
+  --sky: #93e1ff;
+  --teal: #68bfab;
+  --plum: #402660;
+  --magenta: #d0378d;
+  --sun: #f7c948;
+  --go: #53ae52;
+  --stop: #d82446;
+  --on-go: #1b1228;
+  --on-stop: #ffffff;
+  --t1: #402660;
+  --on-t1: #ffffff;
+  --t2: #f7c948;
+  --on-t2: #2b1f3d;
+  --logo: #402660;
+  --danger-soft: #d82446;
+
+  --font-display: 'Bitter Variable', Georgia, 'Times New Roman', serif;
+  --font-body: 'Nunito Variable', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+
+  --radius: 20px;
+  --radius-sm: 14px;
+  --border: 4px;
+  --border-sm: 3px;
+  --shadow: 0 6px 0 var(--line);
+  --shadow-sm: 0 4px 0 var(--line);
+
+  --column: 560px;
+  --gutter: 16px;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #1a1226;
+    --ink: #fbf3df;
+    --muted: #d9cfe6;
+    --paper: #2b1f3d;
+    --cream: #382a52;
+    --line: #fbf3df;
+    --t1: #7c4dcc;
+    --logo: #fbf3df;
+    --danger-soft: #ff7d93;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #1a1226;
+  --ink: #fbf3df;
+  --muted: #d9cfe6;
+  --paper: #2b1f3d;
+  --cream: #382a52;
+  --line: #fbf3df;
+  --t1: #7c4dcc;
+  --logo: #fbf3df;
+  --danger-soft: #ff7d93;
+  color-scheme: dark;
+}
