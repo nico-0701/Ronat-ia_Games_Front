@@ -24,6 +24,9 @@
   --on-t2: #2b1f3d;
   --logo: #402660;
   --danger-soft: #d82446;
+  /* Cores de texto e de indicadores com contraste AA (conferido em contrast.test.ts). O magenta da marca só vai em texto grande. */
+  --link: #c22f81;
+  --online: #2e8b3a;
 
   --font-display: 'Bitter Variable', Georgia, 'Times New Roman', serif;
   --font-body: 'Nunito Variable', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
@@ -52,6 +55,8 @@
     --t1: #7c4dcc;
     --logo: #fbf3df;
     --danger-soft: #ff7d93;
+    --link: #ff9ccf;
+    --online: #53ae52;
     color-scheme: dark;
   }
 }
@@ -66,5 +71,7 @@
   --t1: #7c4dcc;
   --logo: #fbf3df;
   --danger-soft: #ff7d93;
+  --link: #ff9ccf;
+  --online: #53ae52;
   color-scheme: dark;
 }

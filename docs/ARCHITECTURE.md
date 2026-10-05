@@ -73,6 +73,16 @@ O mesmo `dist/` empacotado num WebView pelo Capacitor (pasta `android/`, ver [AN
 
 CSS Modules (sem biblioteca de componentes). Paleta e fontes do app original: roxo, magenta, amarelo; Bitter nos títulos e Nunito no texto; contorno grosso e sombra dura, botões grandes (legíveis para todas as idades); modo escuro automático. Tudo em português (pt-BR).
 
+## Acessibilidade
+
+O público vai dos netos aos avós, então a leitura fácil é requisito, não enfeite:
+
+- **Contraste:** todas as combinações de texto das cores do tema (claro e escuro) passam do AA (4,5:1); indicadores (foco, bolinha de "online", contornos) passam de 3:1. `src/styles/contrast.test.ts` lê o `tokens.css` e falha se uma cor nova ou alterada deixar de passar. Links usam `--link` (mais escuro no claro, mais claro no escuro) e o magenta da marca só aparece em texto grande.
+- **Alvos grandes:** botões de 64 a 84 px, campos de 60 px, texto base de 18 px; o foco do teclado tem contorno grosso e visível.
+- **Semântica:** rótulos ligados aos campos, `role="alert"` nos erros, `aria-live` no que aparece sozinho (avisos, cronômetros desligados do leitor para não falar a cada segundo), janelas com foco preso e devolvido, listas e títulos de verdade, ícones decorativos escondidos e os que informam, descritos. `src/a11y.test.tsx` roda o axe-core nas telas principais (entrada, grupo e abas, lobby, as fases da Mímica, resultado, perfil, janelas).
+- **Movimento:** `prefers-reduced-motion` desliga animações.
+- **Cor nunca é o único sinal:** o time aparece também com número e nome, o vencedor com troféu e posição.
+
 ## Testes
 
 - Unidade: erros, telefone, relógio, tokens, sessão (incluindo duas abas), versão, reconciliação de versões, o hub do SignalR com uma conexão de mentira (reconexão, reassinatura, fechamento), o modelo da Mímica.

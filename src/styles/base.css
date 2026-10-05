@@ -53,7 +53,7 @@ p {
 }
 
 a {
-  color: var(--magenta);
+  color: var(--link);
   font-weight: 800;
 }
 

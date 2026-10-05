@@ -22,8 +22,9 @@
 }
 
 .input::placeholder {
-  color: var(--muted);
-  opacity: 0.7;
+  /* Mais claro que o texto digitado, mas ainda com contraste AA (4,5:1) sobre o campo. */
+  color: color-mix(in srgb, var(--muted) 78%, var(--paper));
+  opacity: 1;
   font-weight: 600;
 }
 

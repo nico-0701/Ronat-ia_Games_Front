@@ -61,7 +61,7 @@
   min-width: 10px;
   min-height: 10px;
   border-radius: 50%;
-  background: var(--go);
+  background: var(--online);
   border: 2px solid var(--bg);
 }
 
