@@ -51,7 +51,7 @@ export function Icon({ name, size = '1.25em', ...rest }: IconProps) {
       strokeWidth={2.6}
       strokeLinecap="round"
       strokeLinejoin="round"
-      aria-hidden="true"
+      aria-hidden={rest['aria-label'] === undefined && rest.role === undefined ? 'true' : undefined}
       focusable="false"
       {...rest}
     >

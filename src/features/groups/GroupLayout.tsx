@@ -36,6 +36,8 @@ export function GroupLayout() {
   const data = group.data;
   const tabs = [
     { to: `/grupos/${groupId}/partidas`, label: 'Partidas' },
+    { to: `/grupos/${groupId}/ranking`, label: 'Ranking' },
+    { to: `/grupos/${groupId}/historico`, label: 'Histórico' },
     { to: `/grupos/${groupId}/membros`, label: 'Pessoas' },
     { to: `/grupos/${groupId}/ajustes`, label: 'Ajustes' },
   ];

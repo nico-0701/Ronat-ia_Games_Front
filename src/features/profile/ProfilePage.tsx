@@ -8,17 +8,23 @@ import { Button } from '@/ui/Button';
 import { Card, Hint } from '@/ui/Card';
 import { ErrorNote } from '@/ui/ErrorNote';
 import { PageHeader } from '@/ui/Page';
+import { PhotoPicker } from '@/ui/PhotoPicker';
 import { PRESET_KEYS } from '@/ui/presetCatalog';
 import { Loading } from '@/ui/Spinner';
 import { TextField } from '@/ui/TextField';
 import { useToast } from '@/ui/toast';
-import { useUpdateProfile } from './queries';
+import { DataCard } from './DataCard';
+import { DevicesCard } from './DevicesCard';
+import { StatsCard } from './StatsCard';
+import { useRemovePhoto, useUpdateProfile, useUploadPhoto } from './queries';
 
 export function ProfilePage() {
   const me = useMe();
   const presets = useAvatarPresets();
   const logout = useLogout();
   const update = useUpdateProfile();
+  const upload = useUploadPhoto();
+  const removePhoto = useRemovePhoto();
   const toast = useToast();
   const [draftName, setDraftName] = useState<string | null>(null);
   const [leaving, setLeaving] = useState(false);
@@ -97,7 +103,22 @@ export function ProfilePage() {
           legend="Trocar de avatar"
         />
         {update.error && !fieldError(update.error, 'displayName') ? <ErrorNote error={update.error} /> : null}
+        <PhotoPicker
+          hasPhoto={user.avatar.kind === 'photo'}
+          busy={upload.isPending || removePhoto.isPending}
+          error={upload.error ?? removePhoto.error}
+          onPick={(photo) =>
+            upload.mutate(photo, { onSuccess: () => toast.show('Foto atualizada!', 'success') })
+          }
+          onRemove={() =>
+            removePhoto.mutate(undefined, { onSuccess: () => toast.show('Foto removida.', 'success') })
+          }
+        />
       </Card>
+
+      <StatsCard />
+      <DevicesCard />
+      <DataCard />
 
       <Card>
         <Hint>Sair apenas encerra o login neste aparelho. Seus grupos e resultados continuam guardados.</Hint>

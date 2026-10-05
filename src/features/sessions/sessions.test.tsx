@@ -55,7 +55,7 @@ describe('aba de partidas do grupo', () => {
     expect(within(list).getByText(/Terminada · 4 jogadores/)).toBeInTheDocument();
 
     await user.click(within(list).getAllByRole('link')[0]!);
-    expect(router.state.location.pathname).toBe(`/partidas/${SESSION_ID}`);
+    await waitFor(() => expect(router.state.location.pathname).toBe(`/partidas/${SESSION_ID}`));
   });
 
   it('sem partidas mostra o estado vazio e o botão de nova partida', async () => {
@@ -64,7 +64,7 @@ describe('aba de partidas do grupo', () => {
     expect(await screen.findByText('Nenhuma partida ainda')).toBeInTheDocument();
     await user.click(screen.getByRole('link', { name: 'Nova partida' }));
 
-    expect(router.state.location.pathname).toBe(`/grupos/${GROUP_ID}/nova-partida`);
+    await waitFor(() => expect(router.state.location.pathname).toBe(`/grupos/${GROUP_ID}/nova-partida`));
   });
 
   it('recarrega a lista quando o servidor avisa que mudou', async () => {

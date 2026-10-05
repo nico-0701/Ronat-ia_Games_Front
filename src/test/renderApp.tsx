@@ -15,7 +15,7 @@ export type Handler = (request: Request) => Response | Promise<Response>;
 
 /** Um servidor de mentira: cada rota é `"MÉTODO /caminho"`. Requisição sem rota combinada falha o teste. */
 export function fakeApi(handlers: Record<string, Handler> = {}) {
-  const calls: { key: string; body: unknown; auth: string | null }[] = [];
+  const calls: { key: string; body: unknown; auth: string | null; search: string }[] = [];
   const defaults: Record<string, Handler> = {
     'GET /api/v1/meta': () =>
       jsonResponse({
@@ -26,6 +26,8 @@ export function fakeApi(handlers: Record<string, Handler> = {}) {
       }),
     'GET /api/v1/games': () => jsonResponse([gameFixture()]),
     'GET /api/v1/groups/{groupId}/sessions': () => jsonResponse([]),
+    'GET /api/v1/users/me/stats': () => jsonResponse({ played: 0, wins: 0, groups: 0, byGame: [] }),
+    'GET /api/v1/auth/sessions': () => jsonResponse([]),
     'GET /api/v1/avatars/presets': () =>
       jsonResponse({
         default: 'preset-1',
@@ -63,7 +65,7 @@ export function fakeApi(handlers: Record<string, Handler> = {}) {
       // corpo que não é JSON (ex.: multipart): fica como texto
     }
 
-    calls.push({ key, body, auth: request.headers.get('Authorization') });
+    calls.push({ key, body, auth: request.headers.get('Authorization'), search: url.search });
     const handler = findHandler(key);
     if (!handler) {
       throw new Error(`Requisição inesperada nos testes: ${key}`);

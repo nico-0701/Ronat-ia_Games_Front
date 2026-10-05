@@ -6,7 +6,8 @@ import { browserStorage, TokenStore, type StorageLike } from '@/api/tokens';
 import type { ServerClock } from '@/lib/clock';
 import { serverClock } from '@/lib/clock';
 import { apiBaseUrl } from '@/lib/env';
-import { SignalRHub, type LiveHub } from '@/features/sessions/live/hub';
+import type { LiveHub } from '@/features/sessions/live/hub';
+import { LazyHub } from '@/features/sessions/live/lazyHub';
 
 /** Tudo o que as telas usam para falar com o servidor, montado uma vez (e substituível nos testes). */
 export interface Services {
@@ -74,7 +75,7 @@ export function createServices(options: ServicesOptions = {}): Services {
     queryClient: options.queryClient ?? createQueryClient(),
     live:
       options.live ??
-      new SignalRHub({
+      new LazyHub({
         url: `${baseUrl}/hubs/sessions`,
         accessToken: () => session.validAccessToken(),
       }),

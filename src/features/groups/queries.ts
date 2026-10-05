@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { unwrap } from '@/api/client';
 import type { GroupDetail, GroupPreview, GroupRole, GroupSummary, Member } from '@/api/types';
 import { useApi, useAuthStatus } from '@/app/servicesContext';
+import { photoForm } from '@/lib/imageUpload';
 
 export const groupKeys = {
   all: ['groups'] as const,
@@ -199,6 +200,39 @@ export function useRemoveMember(groupId: string) {
     mutationFn: (memberId: string) =>
       unwrap(
         api.DELETE('/api/v1/groups/{groupId}/members/{memberId}', {
+          params: { path: { groupId, memberId } },
+        }),
+      ),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: groupKeys.detail(groupId) }),
+  });
+}
+
+/** Foto de um perfil sem conta (a de quem tem conta é a da própria conta). */
+export function useUploadMemberPhoto(groupId: string) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+
+  return useMutation<Member, Error, { memberId: string; photo: Blob }>({
+    mutationFn: ({ memberId, photo }) =>
+      unwrap(
+        api.PUT('/api/v1/groups/{groupId}/members/{memberId}/avatar', {
+          params: { path: { groupId, memberId } },
+          body: { file: '' },
+          bodySerializer: () => photoForm(photo),
+        }),
+      ),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: groupKeys.detail(groupId) }),
+  });
+}
+
+export function useRemoveMemberPhoto(groupId: string) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+
+  return useMutation<Member, Error, string>({
+    mutationFn: (memberId) =>
+      unwrap(
+        api.DELETE('/api/v1/groups/{groupId}/members/{memberId}/avatar', {
           params: { path: { groupId, memberId } },
         }),
       ),

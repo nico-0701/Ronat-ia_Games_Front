@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { fieldError } from '@/api/errors';
 import type { Member } from '@/api/types';
 import { AvatarPicker } from '@/ui/Avatar';
+import { PhotoPicker } from '@/ui/PhotoPicker';
 import { Button } from '@/ui/Button';
 import { Dialog } from '@/ui/Dialog';
 import { ErrorNote } from '@/ui/ErrorNote';
 import { DEFAULT_PRESET, PRESET_KEYS } from '@/ui/presetCatalog';
 import { TextField } from '@/ui/TextField';
-import { useAddProfile, useUpdateMember } from './queries';
+import { useAddProfile, useRemoveMemberPhoto, useUpdateMember, useUploadMemberPhoto } from './queries';
 
 interface ProfileDialogProps {
   groupId: string;
@@ -23,6 +24,8 @@ interface ProfileDialogProps {
 export function ProfileDialog({ groupId, member, onClose }: ProfileDialogProps) {
   const add = useAddProfile(groupId);
   const update = useUpdateMember(groupId);
+  const uploadPhoto = useUploadMemberPhoto(groupId);
+  const removePhoto = useRemoveMemberPhoto(groupId);
   const [name, setName] = useState(member?.displayName ?? '');
   const [preset, setPreset] = useState(member?.avatar.preset ?? DEFAULT_PRESET);
   const editing = member !== undefined;
@@ -81,6 +84,15 @@ export function ProfileDialog({ groupId, member, onClose }: ProfileDialogProps) 
         onChange={setPreset}
         legend="Avatar"
       />
+      {member ? (
+        <PhotoPicker
+          hasPhoto={member.avatar.kind === 'photo'}
+          busy={uploadPhoto.isPending || removePhoto.isPending}
+          error={uploadPhoto.error ?? removePhoto.error}
+          onPick={(photo) => uploadPhoto.mutate({ memberId: member.id, photo }, { onSuccess: onClose })}
+          onRemove={() => removePhoto.mutate(member.id, { onSuccess: onClose })}
+        />
+      ) : null}
       {mutation.error && !nameError ? <ErrorNote error={mutation.error} /> : null}
     </Dialog>
   );
