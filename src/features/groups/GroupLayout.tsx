@@ -35,6 +35,7 @@ export function GroupLayout() {
 
   const data = group.data;
   const tabs = [
+    { to: `/grupos/${groupId}/partidas`, label: 'Partidas' },
     { to: `/grupos/${groupId}/membros`, label: 'Pessoas' },
     { to: `/grupos/${groupId}/ajustes`, label: 'Ajustes' },
   ];
@@ -61,7 +62,7 @@ export function GroupLayout() {
   );
 }
 
-/** Por enquanto a porta de entrada do grupo é a lista de pessoas. */
+/** A porta de entrada do grupo são as partidas. */
 export function GroupIndexRedirect() {
-  return <Navigate to="membros" replace />;
+  return <Navigate to="partidas" replace />;
 }

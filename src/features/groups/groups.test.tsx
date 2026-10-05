@@ -7,7 +7,7 @@ import { renderApp } from '@/test/renderApp';
 const ME = { 'GET /api/v1/users/me': () => jsonResponse(userFixture()) };
 
 describe('início com grupos', () => {
-  it('lista os grupos e abre um deles na aba de pessoas', async () => {
+  it('lista os grupos e abre um deles na aba de partidas', async () => {
     const group = groupFixture();
     const { user, router } = renderApp({
       route: '/',
@@ -21,8 +21,8 @@ describe('início com grupos', () => {
 
     await user.click(await screen.findByRole('link', { name: /Família Silva/ }));
 
-    expect(await screen.findByRole('heading', { name: 'Quem está no grupo' })).toBeInTheDocument();
-    expect(router.state.location.pathname).toBe(`/grupos/${GROUP_ID}/membros`);
+    expect(await screen.findByText('Nenhuma partida ainda')).toBeInTheDocument();
+    expect(router.state.location.pathname).toBe(`/grupos/${GROUP_ID}/partidas`);
   });
 });
 
@@ -106,7 +106,7 @@ describe('entrar num grupo', () => {
     await user.click(screen.getByRole('radio', { name: /Vovó Lúcia/ }));
     await user.click(screen.getByRole('button', { name: 'Entrar no grupo' }));
 
-    await waitFor(() => expect(router.state.location.pathname).toBe(`/grupos/${GROUP_ID}/membros`));
+    await waitFor(() => expect(router.state.location.pathname).toBe(`/grupos/${GROUP_ID}/partidas`));
     expect(api.called('POST /api/v1/groups/join')[0]?.body).toEqual({
       code: 'K7RM4PXT',
       claimMemberId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
@@ -177,7 +177,7 @@ describe('entrar num grupo', () => {
     expect(await screen.findByText(/você já está neste grupo/)).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Abrir o grupo' }));
 
-    await waitFor(() => expect(router.state.location.pathname).toBe(`/grupos/${GROUP_ID}/membros`));
+    await waitFor(() => expect(router.state.location.pathname).toBe(`/grupos/${GROUP_ID}/partidas`));
   });
 });
 

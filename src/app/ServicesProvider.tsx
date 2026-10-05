@@ -13,6 +13,7 @@ export function ServicesProvider({ services, children }: { services: Services; c
         // Quem sai (ou perde a sessão) não deixa dados para a próxima pessoa que usar o aparelho.
         if (services.session.getStatus() === 'anonymous') {
           services.queryClient.clear();
+          void services.live.stop();
         }
       }),
     [services],

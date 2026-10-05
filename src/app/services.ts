@@ -6,6 +6,7 @@ import { browserStorage, TokenStore, type StorageLike } from '@/api/tokens';
 import type { ServerClock } from '@/lib/clock';
 import { serverClock } from '@/lib/clock';
 import { apiBaseUrl } from '@/lib/env';
+import { SignalRHub, type LiveHub } from '@/features/sessions/live/hub';
 
 /** Tudo o que as telas usam para falar com o servidor, montado uma vez (e substituível nos testes). */
 export interface Services {
@@ -18,6 +19,8 @@ export interface Services {
   publicApi: ApiClient;
   clock: ServerClock;
   queryClient: QueryClient;
+  /** Tempo real (SignalR): avisa e entrega a visão da partida; agir é pelo REST. */
+  live: LiveHub;
 }
 
 export interface ServicesOptions {
@@ -28,6 +31,7 @@ export interface ServicesOptions {
   clock?: ServerClock;
   lock?: LockRunner;
   queryClient?: QueryClient;
+  live?: LiveHub;
 }
 
 export function createQueryClient(): QueryClient {
@@ -68,5 +72,11 @@ export function createServices(options: ServicesOptions = {}): Services {
     publicApi,
     clock,
     queryClient: options.queryClient ?? createQueryClient(),
+    live:
+      options.live ??
+      new SignalRHub({
+        url: `${baseUrl}/hubs/sessions`,
+        accessToken: () => session.validAccessToken(),
+      }),
   };
 }

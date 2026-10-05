@@ -7,7 +7,9 @@ import { App } from '@/app/App';
 import { routes } from '@/app/routes';
 import { createServices } from '@/app/services';
 import { ServerClock } from '@/lib/clock';
+import { FakeHub } from './fakeHub';
 import { authFixture, createMutex, jsonResponse, memoryStorage } from './helpers';
+import { gameFixture } from './sessions';
 
 export type Handler = (request: Request) => Response | Promise<Response>;
 
@@ -22,6 +24,8 @@ export function fakeApi(handlers: Record<string, Handler> = {}) {
         serverTimeUtc: new Date().toISOString(),
         auth: { captchaRequired: false, captchaSiteKey: null, registrationOpen: true },
       }),
+    'GET /api/v1/games': () => jsonResponse([gameFixture()]),
+    'GET /api/v1/groups/{groupId}/sessions': () => jsonResponse([]),
     'GET /api/v1/avatars/presets': () =>
       jsonResponse({
         default: 'preset-1',
@@ -82,12 +86,18 @@ export function fakeApi(handlers: Record<string, Handler> = {}) {
 
 interface RenderAppOptions {
   route?: string;
+  hub?: FakeHub;
   handlers?: Record<string, Handler>;
   signedIn?: boolean;
 }
 
 /** Monta o app inteiro (rotas, provedores e serviços) contra o servidor de mentira. */
-export function renderApp({ route = '/', handlers, signedIn = false }: RenderAppOptions = {}) {
+export function renderApp({
+  route = '/',
+  handlers,
+  signedIn = false,
+  hub = new FakeHub(),
+}: RenderAppOptions = {}) {
   const api = fakeApi(handlers);
   const storage = memoryStorage();
   const clock = new ServerClock();
@@ -97,6 +107,7 @@ export function renderApp({ route = '/', handlers, signedIn = false }: RenderApp
     fetch: api.fetch,
     clock,
     lock: createMutex(),
+    live: hub,
     queryClient: new QueryClient({
       defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
     }),
@@ -108,5 +119,5 @@ export function renderApp({ route = '/', handlers, signedIn = false }: RenderApp
   const router = createMemoryRouter(routes, { initialEntries: [route] });
   const user = userEvent.setup();
   const view = render(<App services={services} router={router} />);
-  return { ...view, user, router, services, api, clock, storage };
+  return { ...view, user, router, services, api, clock, storage, hub };
 }

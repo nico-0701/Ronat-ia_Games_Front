@@ -1,0 +1,146 @@
+.scoreboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 8px;
+  border: var(--border) solid var(--line);
+  border-radius: var(--radius);
+  opacity: 0.8;
+}
+
+.team0 {
+  background: var(--t1);
+  color: var(--on-t1);
+}
+
+.team1 {
+  background: var(--t2);
+  color: var(--on-t2);
+}
+
+.active {
+  opacity: 1;
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.teamName {
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.points {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.members {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  min-height: 28px;
+}
+
+.round {
+  text-align: center;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.turnTitle {
+  align-self: flex-start;
+  padding: 6px 16px;
+  border: var(--border) solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.prepLabel {
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: #2b1f3d;
+}
+
+.bigNumber {
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 6rem;
+  line-height: 1;
+  color: #2b1f3d;
+}
+
+.clock {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.clockNumber {
+  font-size: 4.5rem;
+  line-height: 1;
+}
+
+.clockUnit {
+  font-size: 1.6rem;
+}
+
+.urgent {
+  color: var(--stop);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+:root[data-theme='dark'] .urgent {
+  color: var(--danger-soft);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .urgent {
+    color: var(--danger-soft);
+  }
+}
+
+@keyframes pulse {
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+.word {
+  padding: 18px 14px;
+  text-align: center;
+  background: #fffbf2;
+  color: #2b1f3d;
+  border: var(--border) solid #2b1f3d;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 0 #2b1f3d;
+}
+
+.kicker {
+  font-weight: 800;
+  font-size: 1rem;
+  color: #51446a;
+}
+
+.text {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 9vw, 2.6rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}

@@ -7,6 +7,9 @@ import { JoinGroupPage } from '@/features/groups/JoinGroupPage';
 import { MembersTab } from '@/features/groups/MembersTab';
 import { SettingsTab } from '@/features/groups/SettingsTab';
 import { HomePage } from '@/features/home/HomePage';
+import { GroupSessionsTab } from '@/features/sessions/GroupSessionsTab';
+import { NewSessionPage } from '@/features/sessions/NewSessionPage';
+import { SessionPage } from '@/features/sessions/SessionPage';
 import { PrivacyPage, TermsPage } from '@/features/legal/LegalPages';
 import { ProfilePage } from '@/features/profile/ProfilePage';
 import { NotFoundPage, RouteError } from './ErrorPages';
@@ -28,11 +31,14 @@ export const routes: RouteObject[] = [
           { path: '/perfil', element: <ProfilePage /> },
           { path: '/grupos/novo', element: <CreateGroupPage /> },
           { path: '/grupos/entrar', element: <JoinGroupPage /> },
+          { path: '/grupos/:groupId/nova-partida', element: <NewSessionPage /> },
+          { path: '/partidas/:sessionId', element: <SessionPage /> },
           {
             path: '/grupos/:groupId',
             element: <GroupLayout />,
             children: [
               { index: true, element: <GroupIndexRedirect /> },
+              { path: 'partidas', element: <GroupSessionsTab /> },
               { path: 'membros', element: <MembersTab /> },
               { path: 'ajustes', element: <SettingsTab /> },
             ],

@@ -1,0 +1,52 @@
+.headline {
+  text-align: center;
+  font-size: 2rem;
+  color: #2b1f3d;
+}
+
+.teamScores {
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #2b1f3d;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 6px 10px;
+  background: var(--cream);
+  border: var(--border-sm) solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.rank {
+  width: 2.2em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+}

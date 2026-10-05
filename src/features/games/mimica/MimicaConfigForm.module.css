@@ -1,0 +1,49 @@
+.group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.group legend {
+  padding: 0;
+  margin-bottom: 6px;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.group:disabled {
+  opacity: 0.6;
+}
+
+.choices {
+  display: flex;
+  gap: 8px;
+}
+
+.choice {
+  flex: 1;
+  min-height: 52px;
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border-sm) solid var(--line);
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.selected {
+  background: var(--sun);
+  color: #2b1f3d;
+  box-shadow: var(--shadow-sm);
+}
+
+.themes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
