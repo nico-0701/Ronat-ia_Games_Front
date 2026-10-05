@@ -1,0 +1,14 @@
+.code {
+  margin: 0;
+  padding: 10px 12px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 11vw, 2.8rem);
+  letter-spacing: 0.08em;
+  color: #2b1f3d;
+  background: #fffbf2;
+  border: var(--border-sm) dashed #2b1f3d;
+  border-radius: var(--radius-sm);
+  user-select: all;
+}

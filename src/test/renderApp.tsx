@@ -28,10 +28,29 @@ export function fakeApi(handlers: Record<string, Handler> = {}) {
         keys: ['preset-1', 'preset-2', 'preset-3', 'preset-4', 'preset-5', 'preset-6'],
       }),
   };
-  const table = { ...defaults, ...handlers };
+  const table: Record<string, Handler> = { ...defaults, ...handlers };
+
+  /** A rota pode ter parâmetros: `"GET /api/v1/groups/{groupId}"` casa com `"GET /api/v1/groups/abc"`. */
+  const findHandler = (key: string): Handler | undefined => {
+    if (table[key]) {
+      return table[key];
+    }
+
+    for (const [pattern, handler] of Object.entries(table)) {
+      if (pattern.includes('{')) {
+        const regex = new RegExp(`^${pattern.replace(/\{[^}]+\}/g, '[^/]+')}$`);
+        if (regex.test(key)) {
+          return handler;
+        }
+      }
+    }
+
+    return undefined;
+  };
 
   const fetchImpl = vi.fn(async (request: Request) => {
-    const key = `${request.method} ${new URL(request.url).pathname}`;
+    const url = new URL(request.url);
+    const key = `${request.method} ${url.pathname}`;
     const text = request.method === 'GET' ? '' : await request.clone().text();
     let body: unknown = text;
     try {
@@ -41,7 +60,7 @@ export function fakeApi(handlers: Record<string, Handler> = {}) {
     }
 
     calls.push({ key, body, auth: request.headers.get('Authorization') });
-    const handler = table[key];
+    const handler = findHandler(key);
     if (!handler) {
       throw new Error(`Requisição inesperada nos testes: ${key}`);
     }
@@ -49,7 +68,16 @@ export function fakeApi(handlers: Record<string, Handler> = {}) {
     return handler(request);
   });
 
-  return { fetch: fetchImpl, calls, on: (key: string, handler: Handler) => void (table[key] = handler) };
+  return {
+    fetch: fetchImpl,
+    calls,
+    on: (key: string, handler: Handler) => void (table[key] = handler),
+    /** As chamadas feitas a uma rota (`"POST /api/v1/groups"`; aceita `{param}`). */
+    called: (pattern: string) => {
+      const regex = new RegExp(`^${pattern.replace(/\{[^}]+\}/g, '[^/]+')}$`);
+      return calls.filter((call) => regex.test(call.key));
+    },
+  };
 }
 
 interface RenderAppOptions {

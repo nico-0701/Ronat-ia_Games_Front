@@ -24,6 +24,7 @@ export function TextField({ label, hint, error, className, ...rest }: TextFieldP
         className={`${styles.input} ${error ? styles.invalid : ''}`}
         aria-invalid={error ? true : undefined}
         aria-describedby={described}
+        spellCheck={false}
         {...rest}
       />
       {hint ? (
