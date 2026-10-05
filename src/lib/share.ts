@@ -1,3 +1,5 @@
+import { isNative } from './platform';
+
 /** Copia um texto para a área de transferência. Devolve `false` se o navegador não deixou. */
 export async function copyText(text: string): Promise<boolean> {
   try {
@@ -29,6 +31,16 @@ export type ShareOutcome = 'shared' | 'copied' | 'failed' | 'cancelled';
 
 /** Abre o menu de compartilhar do aparelho (WhatsApp etc.); sem ele, copia o texto. */
 export async function shareText(text: string, title?: string): Promise<ShareOutcome> {
+  if (isNative()) {
+    try {
+      const { Share } = await import('@capacitor/share');
+      await Share.share({ title, text, dialogTitle: title });
+      return 'shared';
+    } catch {
+      return 'cancelled'; // a pessoa fechou o menu (o plugin recusa a promessa nesse caso)
+    }
+  }
+
   if (typeof navigator.share === 'function') {
     try {
       await navigator.share({ title, text });

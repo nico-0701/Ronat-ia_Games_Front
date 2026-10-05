@@ -1,8 +1,8 @@
 # Ronat-ia Games · Front
 
-Cliente Web (e, depois, Android via Capacitor) da plataforma de jogos **Ronat-ia Games**: jogos para a família e os amigos, cada um no seu celular. O servidor (API, regras dos jogos, banco) está no repositório [`Ronat-ia_Games_Back`](https://github.com/nico-0701/Ronat-ia_Games_Back); este repositório é só a interface.
+Cliente Web e Android (Capacitor) da plataforma de jogos **Ronat-ia Games**: jogos para a família e os amigos, cada um no seu celular. O servidor (API, regras dos jogos, banco) está no repositório [`Ronat-ia_Games_Back`](https://github.com/nico-0701/Ronat-ia_Games_Back); este repositório é só a interface.
 
-> **Estado:** o Web está completo para o primeiro jogo: entrada por telefone, grupos (senha, pessoas, perfis sem celular), partidas em tempo real, **Mímica**, ranking, histórico e perfil (foto, aparelhos, baixar os dados e excluir a conta). Falta empacotar para Android (Capacitor), publicar e os próximos jogos. Veja [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) e [`docs/GAMES.md`](docs/GAMES.md).
+> **Estado:** o app está completo para o primeiro jogo, no navegador e no Android: entrada por telefone, grupos (senha, pessoas, perfis sem celular), partidas em tempo real, **Mímica**, ranking, histórico e perfil (foto, aparelhos, baixar os dados e excluir a conta). Falta publicar (Cloudflare Pages + Render) e os próximos jogos. Veja [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/ANDROID.md`](docs/ANDROID.md) e [`docs/GAMES.md`](docs/GAMES.md).
 
 ## Stack
 

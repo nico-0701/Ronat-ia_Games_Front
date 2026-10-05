@@ -23,8 +23,14 @@ export function DataCard() {
     exportData.mutate(undefined, {
       onSuccess: (data) => {
         const day = new Date().toISOString().slice(0, 10);
-        downloadJson(`ronat-ia-meus-dados-${day}.json`, data);
-        toast.show('Pronto! O arquivo com os seus dados foi baixado.', 'success');
+        void (async () => {
+          try {
+            await downloadJson(`ronat-ia-meus-dados-${day}.json`, data);
+            toast.show('Pronto! O arquivo com os seus dados foi baixado.', 'success');
+          } catch {
+            toast.show('Não foi possível salvar o arquivo. Tente de novo.', 'error');
+          }
+        })();
       },
     });
 

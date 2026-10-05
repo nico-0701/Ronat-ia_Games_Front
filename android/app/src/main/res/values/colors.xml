@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Paleta do app (a mesma de src/styles/tokens.css) -->
+    <color name="colorPrimary">#402660</color>
+    <color name="colorPrimaryDark">#2b1a45</color>
+    <color name="colorAccent">#d0378d</color>
+</resources>

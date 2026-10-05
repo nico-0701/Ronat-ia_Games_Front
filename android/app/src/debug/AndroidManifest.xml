@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Só nas versões de depuração: permite falar com uma API em HTTP na rede local (ex.: o PC do desenvolvedor).
+        A versão final (release) fala apenas HTTPS.
+    -->
+    <application android:usesCleartextTraffic="true" />
+</manifest>

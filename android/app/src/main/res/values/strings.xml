@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Ronat-ia Games</string>
+    <string name="title_activity_main">Ronat-ia Games</string>
+    <string name="package_name">com.ronatia.games</string>
+    <string name="custom_url_scheme">com.ronatia.games</string>
+</resources>

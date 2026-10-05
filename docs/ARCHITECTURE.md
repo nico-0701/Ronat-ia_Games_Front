@@ -63,7 +63,11 @@ Telas pouco usadas (partidas, ranking, perfil, textos legais) são rotas pregui�
 
 ## Instalação como app
 
-O manifesto (`public/manifest.webmanifest`) e os ícones PNG (`npm run icons`) permitem "Adicionar à tela inicial" no celular. Não há _service worker_: o jogo precisa de internet o tempo todo, então cache offline não ajudaria. O empacotamento Android (Capacitor) é a próxima etapa.
+O manifesto (`public/manifest.webmanifest`) e os ícones PNG (`npm run icons`) permitem "Adicionar à tela inicial" no celular. Não há _service worker_: o jogo precisa de internet o tempo todo, então cache offline não ajudaria.
+
+## App Android
+
+O mesmo `dist/` empacotado num WebView pelo Capacitor (pasta `android/`, ver [ANDROID.md](ANDROID.md)). O que é do aparelho (compartilhar, salvar arquivo, botão voltar, voltar ao primeiro plano) está isolado em `src/lib/platform.ts`, `share.ts`, `download.ts` e `src/app/lifecycle.ts`, e só é carregado quando `isNative()`: o código das telas é igual ao do site.
 
 ## Estilo
 

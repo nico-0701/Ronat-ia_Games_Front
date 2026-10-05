@@ -5,7 +5,7 @@
 //
 // Saída em public/icons/: icon-192.png, icon-512.png (cantos arredondados), icon-maskable-512.png (quadrado cheio, rosto menor
 // para caber na zona segura do Android) e apple-touch-icon.png (180, quadrado cheio; o iOS arredonda sozinho).
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { crc32, deflateSync } from 'node:zlib';
@@ -50,8 +50,23 @@ function distanceToPolyline(px, py, points) {
   return best;
 }
 
+// O sorriso é uma curva fixa: calculada uma vez só (por amostra seria lentíssimo).
+const SMILE_ROUNDED = bezier([23, 37], [26, 42], [38, 42], [41, 37]);
+const SMILE_SQUARE = bezier([25, 36], [28, 41], [37, 41], [39, 36]);
+
 /** A cor de um ponto do desenho (coordenadas 0..64) ou `null` se for transparente. */
-function shade(x, y, { rounded }) {
+function shade(x, y, { rounded = false, circle = false, foreground = false }) {
+  if (circle && Math.hypot(x - 32, y - 32) > 32) {
+    return null; // ícone redondo do Android
+  }
+
+  if (foreground) {
+    // Ícone adaptativo: só o rosto, menor, no miolo (a zona segura é ~61% do quadro) e sobre fundo transparente.
+    const shrink = 1.07;
+    x = 32 + (x - 32) * shrink;
+    y = 32 + (y - 32) * shrink;
+  }
+
   if (rounded) {
     const rx = 14;
     const cx = Math.min(Math.max(x, rx), 64 - rx);
@@ -65,9 +80,7 @@ function shade(x, y, { rounded }) {
   const eyeY = rounded ? 28 : 29;
   const eyeLeft = rounded ? 25 : 26;
   const eyeRight = rounded ? 39 : 38;
-  const smile = rounded
-    ? bezier([23, 37], [26, 42], [38, 42], [41, 37])
-    : bezier([25, 36], [28, 41], [37, 41], [39, 36]);
+  const smile = rounded ? SMILE_ROUNDED : SMILE_SQUARE;
 
   if (distanceToPolyline(x, y, smile) <= 1.5) {
     return INK;
@@ -82,7 +95,7 @@ function shade(x, y, { rounded }) {
     return distance < radius - 1.5 ? SUN : CREAM;
   }
 
-  return PLUM;
+  return foreground ? null : PLUM;
 }
 
 function render(size, options) {
@@ -161,4 +174,27 @@ for (const [name, size, options] of icons) {
   const file = resolve(out, name);
   writeFileSync(file, png(size, render(size, options)));
   console.log(`${name} (${size}x${size})`);
+}
+
+// Ícones de lançador do projeto Android (Capacitor), se ele existir: quadrado arredondado, redondo e a camada do ícone adaptativo.
+const androidRes = resolve(root, 'android/app/src/main/res');
+if (existsSync(androidRes)) {
+  const densities = [
+    ['mdpi', 48, 108],
+    ['hdpi', 72, 162],
+    ['xhdpi', 96, 216],
+    ['xxhdpi', 144, 324],
+    ['xxxhdpi', 192, 432],
+  ];
+  for (const [density, legacy, adaptive] of densities) {
+    const dir = resolve(androidRes, `mipmap-${density}`);
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(resolve(dir, 'ic_launcher.png'), png(legacy, render(legacy, { rounded: true })));
+    writeFileSync(resolve(dir, 'ic_launcher_round.png'), png(legacy, render(legacy, { circle: true })));
+    writeFileSync(
+      resolve(dir, 'ic_launcher_foreground.png'),
+      png(adaptive, render(adaptive, { foreground: true })),
+    );
+    console.log(`android mipmap-${density}`);
+  }
 }
